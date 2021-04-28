@@ -11,10 +11,10 @@ const usersData = [
 ];
 
 const hobbiesData = [
-  { id: "1", title: "Lebanon", description: "" },
-  { id: "2", title: "Tajikistan", description: "" },
-  { id: "3", title: "Niue", description: "" },
-  { id: "4", title: "South Sudan", description: "" },
+  { id: "1", title: "Lebanon", description: "", userId: "1" },
+  { id: "2", title: "Tajikistan", description: "", userId: "2" },
+  { id: "3", title: "Niue", description: "", userId: "3" },
+  { id: "4", title: "South Sudan", description: "", userId: "4" },
 ];
 
 const postsData = [
@@ -71,6 +71,12 @@ const HobbyType = new GraphQLObjectType({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
     description: { type: GraphQLString },
+    user: {
+      type: UserType,
+      resolve(parent, args) {
+        return _.find(usersData, { id: parent.userId });
+      },
+    },
   }),
 });
 
