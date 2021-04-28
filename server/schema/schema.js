@@ -17,6 +17,29 @@ const hobbiesData = [
   { id: "34", title: "South Sudan", description: "" },
 ];
 
+const postsData = [
+  {
+    id: "233",
+    comment:
+      "card bank particles hunter bigger next adventure opinion active top split level castle member during condition cattle knife cook room guard sport did gray",
+  },
+  {
+    id: "35",
+    comment:
+      "thread never planet catch husband kill plane dog gravity today wonder two audience sing child describe subject passage few done earlier western therefore pink",
+  },
+  {
+    id: "57",
+    comment:
+      "pay height company central police but mathematics ball zero within warn have sum jack coach chemical range flow plane cowboy volume swung movement stream",
+  },
+  {
+    id: "34",
+    comment:
+      "terrible heavy rate machine coach behind aloud medicine corner desk alone wooden roof pupil hope thrown born than student sum here chosen principle straw",
+  },
+];
+
 const {
   GraphQLObjectType,
   GraphQLID,
@@ -30,7 +53,7 @@ const UserType = new GraphQLObjectType({
   name: "User",
   description: "User desc",
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLID },
     name: { type: GraphQLString },
     age: { type: GraphQLInt },
     profession: { type: GraphQLString },
@@ -47,6 +70,15 @@ const HobbyType = new GraphQLObjectType({
   }),
 });
 
+const PostType = new GraphQLObjectType({
+  name: "Post",
+  description: "Post desc",
+  fields: () => ({
+    id: { type: GraphQLID },
+    comment: { type: GraphQLString },
+  }),
+});
+
 // RootQuery
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
@@ -60,12 +92,22 @@ const RootQuery = new GraphQLObjectType({
         return _.find(usersData, { id: args.id });
       },
     },
+
     hobby: {
       type: HobbyType,
       args: { id: { type: GraphQLID } },
 
       resolve(parent, args) {
         return _.find(hobbiesData, { id: args.id });
+      },
+    },
+
+    post: {
+      type: PostType,
+      args: { id: { type: GraphQLID } },
+
+      resolve(parent, args) {
+        return _.find(postsData, { id: args.id });
       },
     },
   },
