@@ -11,32 +11,36 @@ const usersData = [
 ];
 
 const hobbiesData = [
-  { id: "233", title: "Lebanon", description: "" },
-  { id: "35", title: "Tajikistan", description: "" },
-  { id: "57", title: "Niue", description: "" },
-  { id: "34", title: "South Sudan", description: "" },
+  { id: "1", title: "Lebanon", description: "" },
+  { id: "2", title: "Tajikistan", description: "" },
+  { id: "3", title: "Niue", description: "" },
+  { id: "4", title: "South Sudan", description: "" },
 ];
 
 const postsData = [
   {
-    id: "233",
+    id: "1",
     comment:
       "card bank particles hunter bigger next adventure opinion active top split level castle member during condition cattle knife cook room guard sport did gray",
+    userId: "1",
   },
   {
-    id: "35",
+    id: "2",
     comment:
       "thread never planet catch husband kill plane dog gravity today wonder two audience sing child describe subject passage few done earlier western therefore pink",
+    userId: "1",
   },
   {
-    id: "57",
+    id: "3",
     comment:
       "pay height company central police but mathematics ball zero within warn have sum jack coach chemical range flow plane cowboy volume swung movement stream",
+    userId: "2",
   },
   {
-    id: "34",
+    id: "4",
     comment:
       "terrible heavy rate machine coach behind aloud medicine corner desk alone wooden roof pupil hope thrown born than student sum here chosen principle straw",
+    userId: "3",
   },
 ];
 
@@ -76,6 +80,12 @@ const PostType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     comment: { type: GraphQLString },
+    user: {
+      type: UserType,
+      resolve(parent, args) {
+        return _.find(usersData, { id: parent.userId });
+      },
+    },
   }),
 });
 
