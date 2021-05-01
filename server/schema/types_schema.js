@@ -8,7 +8,7 @@ const {
   GraphQLSchema,
   GraphQLBoolean,
   GraphQLFloat,
-  GraphQLList,
+  GraphQLNonNull,
 } = graphql;
 
 // Scalar Type
@@ -17,10 +17,17 @@ const Person = new GraphQLObjectType({
   description: "Represents a Person type",
   fields: () => ({
     id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    age: { type: GraphQLInt },
+    name: { type: new GraphQLNonNull(GraphQLString) },
+    age: { type: new GraphQLNonNull(GraphQLInt) },
     isMarried: { type: GraphQLBoolean },
     gpa: { type: GraphQLFloat },
+
+    justAType: {
+      type: Person,
+      resolve(parent, args) {
+        return parent;
+      },
+    },
   }),
 });
 
@@ -28,7 +35,21 @@ const Person = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   description: "Description",
-  fields: {},
+  fields: {
+    person: {
+      type: Person,
+      resolve(parent, args) {
+        const personObj = {
+          name: "Antonio",
+          age: 35,
+          isMarried: true,
+          gpa: true,
+        };
+
+        return personObj;
+      },
+    },
+  },
 });
 
 module.exports = new GraphQLSchema({
