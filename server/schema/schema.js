@@ -1,48 +1,8 @@
 const graphql = require("graphql");
 const _ = require("lodash");
-
-// Dummy data
-const usersData = [
-  { id: "1", name: "Bond", age: 33, profession: "" },
-  { id: "2", name: "Nannie", age: 18, profession: "" },
-  { id: "3", name: "Nicholas", age: 65, profession: "" },
-  { id: "4", name: "Elsie", age: 94, profession: "" },
-  { id: "5", name: "Kyle", age: 28, profession: "" },
-];
-
-const hobbiesData = [
-  { id: "1", title: "Lebanon", description: "", userId: "1" },
-  { id: "2", title: "Tajikistan", description: "", userId: "2" },
-  { id: "3", title: "Niue", description: "", userId: "3" },
-  { id: "4", title: "South Sudan", description: "", userId: "4" },
-];
-
-const postsData = [
-  {
-    id: "1",
-    comment:
-      "card bank particles hunter bigger next adventure opinion active top split level castle member during condition cattle knife cook room guard sport did gray",
-    userId: "1",
-  },
-  {
-    id: "2",
-    comment:
-      "thread never planet catch husband kill plane dog gravity today wonder two audience sing child describe subject passage few done earlier western therefore pink",
-    userId: "1",
-  },
-  {
-    id: "3",
-    comment:
-      "pay height company central police but mathematics ball zero within warn have sum jack coach chemical range flow plane cowboy volume swung movement stream",
-    userId: "2",
-  },
-  {
-    id: "4",
-    comment:
-      "terrible heavy rate machine coach behind aloud medicine corner desk alone wooden roof pupil hope thrown born than student sum here chosen principle straw",
-    userId: "3",
-  },
-];
+const User = require("../models/user");
+const Hobby = require("../models/hobby");
+const Post = require("../models/post");
 
 const {
   GraphQLObjectType,
@@ -66,14 +26,14 @@ const UserType = new GraphQLObjectType({
     posts: {
       type: new GraphQLList(PostType),
       resolve(parent, args) {
-        return _.filter(postsData, { userId: parent.id });
+        // return _.filter(postsData, { userId: parent.id });
       },
     },
 
     hobbies: {
       type: new GraphQLList(HobbyType),
       resolve(parent, args) {
-        return _.filter(hobbiesData, { userId: parent.id });
+        // return _.filter(hobbiesData, { userId: parent.id });
       },
     },
   }),
@@ -89,7 +49,7 @@ const HobbyType = new GraphQLObjectType({
     user: {
       type: UserType,
       resolve(parent, args) {
-        return _.find(usersData, { id: parent.userId });
+        // return _.find(usersData, { id: parent.userId });
       },
     },
   }),
@@ -104,7 +64,7 @@ const PostType = new GraphQLObjectType({
     user: {
       type: UserType,
       resolve(parent, args) {
-        return _.find(usersData, { id: parent.userId });
+        // return _.find(usersData, { id: parent.userId });
       },
     },
   }),
@@ -172,19 +132,19 @@ const Mutation = new GraphQLObjectType({
     createUser: {
       type: UserType,
       args: {
-        //id: { type: GraphQLID },
         name: { type: GraphQLString },
         age: { type: GraphQLInt },
         profession: { type: GraphQLString },
       },
 
       resolve(parent, args) {
-        const user = {
+        const user = new User({
           name: args.name,
           age: args.age,
           profession: args.profession,
-        };
+        });
 
+        user.save();
         return user;
       },
     },
@@ -192,17 +152,17 @@ const Mutation = new GraphQLObjectType({
     createPost: {
       type: PostType,
       args: {
-        //id: { type: GraphQLID },
         comment: { type: GraphQLString },
         userId: { type: GraphQLID },
       },
 
       resolve(parent, args) {
-        const post = {
+        const post = new Post({
           comment: args.comment,
           userId: args.userId,
-        };
+        });
 
+        post.save();
         return post;
       },
     },
@@ -210,19 +170,19 @@ const Mutation = new GraphQLObjectType({
     createHobby: {
       type: HobbyType,
       args: {
-        //id: { type: GraphQLID },
         title: { type: GraphQLString },
         description: { type: GraphQLString },
         userId: { type: GraphQLID },
       },
 
       resolve(parent, args) {
-        const hobby = {
+        const hobby = new Hobby({
           title: args.title,
           description: args.description,
           userId: args.userId,
-        };
+        });
 
+        hobby.save();
         return hobby;
       },
     },
