@@ -26,21 +26,21 @@ const UserType = new GraphQLObjectType({
     posts: {
       type: new GraphQLList(PostType),
       resolve(parent, args) {
-        // return _.filter(postsData, { userId: parent.id });
+        return Post.find({ userId: parent.id });
       },
     },
 
     hobbies: {
       type: new GraphQLList(HobbyType),
       resolve(parent, args) {
-        // return _.filter(hobbiesData, { userId: parent.id });
+        return Hobby.find({ userId: parent.id });
       },
     },
   }),
 });
 
 const HobbyType = new GraphQLObjectType({
-  name: "Hoddy",
+  name: "Hobby",
   description: "Hobby desc",
   fields: () => ({
     id: { type: GraphQLID },
@@ -49,7 +49,7 @@ const HobbyType = new GraphQLObjectType({
     user: {
       type: UserType,
       resolve(parent, args) {
-        // return _.find(usersData, { id: parent.userId });
+        return User.findById(parent.userId);
       },
     },
   }),
@@ -64,7 +64,7 @@ const PostType = new GraphQLObjectType({
     user: {
       type: UserType,
       resolve(parent, args) {
-        // return _.find(usersData, { id: parent.userId });
+        return User.findById(parent.userId);
       },
     },
   }),
@@ -80,14 +80,14 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLString } },
 
       resolve(parent, args) {
-        return _.find(usersData, { id: args.id });
+        return User.findById(args.id);
       },
     },
 
     users: {
       type: new GraphQLList(UserType),
       resolve(parent, args) {
-        return usersData;
+        return User.find({});
       },
     },
 
@@ -96,14 +96,14 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
 
       resolve(parent, args) {
-        return _.find(hobbiesData, { id: args.id });
+        return Hobby.findById(args.id);
       },
     },
 
     hobbies: {
       type: new GraphQLList(HobbyType),
       resolve(parent, args) {
-        return hobbiesData;
+        return Hobby.find({});
       },
     },
 
@@ -112,14 +112,14 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
 
       resolve(parent, args) {
-        return _.find(postsData, { id: args.id });
+        return Post.findById(args.id);
       },
     },
 
     posts: {
       type: new GraphQLList(PostType),
       resolve(parent, args) {
-        return postsData;
+        return Post.find({});
       },
     },
   },
@@ -144,8 +144,7 @@ const Mutation = new GraphQLObjectType({
           profession: args.profession,
         });
 
-        user.save();
-        return user;
+        return user.save();
       },
     },
 
@@ -162,8 +161,7 @@ const Mutation = new GraphQLObjectType({
           userId: args.userId,
         });
 
-        post.save();
-        return post;
+        return post.save();
       },
     },
 
@@ -182,8 +180,7 @@ const Mutation = new GraphQLObjectType({
           userId: args.userId,
         });
 
-        hobby.save();
-        return hobby;
+        return hobby.save();
       },
     },
   },
