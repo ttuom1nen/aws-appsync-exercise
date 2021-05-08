@@ -10,6 +10,7 @@ const {
   GraphQLInt,
   GraphQLSchema,
   GraphQLList,
+  GraphQLNonNull,
 } = graphql;
 
 // Create types
@@ -131,8 +132,8 @@ const Mutation = new GraphQLObjectType({
     createUser: {
       type: UserType,
       args: {
-        name: { type: GraphQLString },
-        age: { type: GraphQLInt },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) },
         profession: { type: GraphQLString },
       },
 
@@ -150,8 +151,8 @@ const Mutation = new GraphQLObjectType({
     createPost: {
       type: PostType,
       args: {
-        comment: { type: GraphQLString },
-        userId: { type: GraphQLID },
+        comment: { type: new GraphQLNonNull(GraphQLString) },
+        userId: { type: new GraphQLNonNull(GraphQLID) },
       },
 
       resolve(parent, args) {
@@ -167,9 +168,9 @@ const Mutation = new GraphQLObjectType({
     createHobby: {
       type: HobbyType,
       args: {
-        title: { type: GraphQLString },
+        title: { type: new GraphQLNonNull(GraphQLString) },
         description: { type: GraphQLString },
-        userId: { type: GraphQLID },
+        userId: { type: new GraphQLNonNull(GraphQLID) },
       },
 
       resolve(parent, args) {
