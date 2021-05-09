@@ -2,6 +2,7 @@ const graphql = require("graphql");
 const User = require("../models/user");
 const Hobby = require("../models/hobby");
 const Post = require("../models/post");
+const { findByIdAndUpdate } = require("../models/user");
 
 const {
   GraphQLObjectType,
@@ -145,6 +146,30 @@ const Mutation = new GraphQLObjectType({
         });
 
         return user.save();
+      },
+    },
+
+    // Update user
+    updateUser: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        name: { type: GraphQLString },
+        age: { type: GraphQLInt },
+        profession: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        return (updatedUser = User.findByIdAndUpdate(
+          args.id,
+          {
+            $set: {
+              name: args.name,
+              age: args.age,
+              profession: args.profession,
+            },
+          },
+          { new: true } // Send back the updated objectType
+        ));
       },
     },
 
