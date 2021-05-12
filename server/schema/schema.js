@@ -2,7 +2,6 @@ const graphql = require("graphql");
 const User = require("../models/user");
 const Hobby = require("../models/hobby");
 const Post = require("../models/post");
-const { findByIdAndUpdate } = require("../models/user");
 
 const {
   GraphQLObjectType,
